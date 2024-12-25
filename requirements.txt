@@ -1,0 +1,16 @@
+Python-IO
+zipfile39
+pandas
+numpy
+scikit-learn
+scipy
+jupyter
+matplotlib
+tqdm
+requests
+joblib
+pyarrow
+psycopg
+psycopg_binary
+evidently 
+pytest-warnings

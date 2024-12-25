@@ -1,0 +1,16 @@
+{
+  "id": "0193fd67-89a6-784c-b7bd-d97ce5b6b698",
+  "name": "drift_monitoring_exam",
+  "description": null,
+  "dashboard": {
+    "name": "drift_monitoring_exam",
+    "panels": [],
+    "tabs": [],
+    "tab_id_to_panel_ids": {}
+  },
+  "team_id": null,
+  "org_id": null,
+  "date_from": null,
+  "date_to": null,
+  "created_at": "2024-12-25T10:40:41.382655"
+}
