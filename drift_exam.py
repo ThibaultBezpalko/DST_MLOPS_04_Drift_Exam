@@ -11,7 +11,7 @@ from sklearn import datasets, ensemble, model_selection
 from scipy.stats import anderson_ksamp
 
 from evidently.metrics import RegressionQualityMetric, RegressionErrorPlot, RegressionErrorDistribution
-from evidently.metric_preset import DataDriftPreset, RegressionPreset
+from evidently.metric_preset import DataDriftPreset, RegressionPreset, TargetDriftPreset
 from evidently.pipeline.column_mapping import ColumnMapping
 from evidently.report import Report
 from evidently.ui.workspace import Workspace
@@ -124,6 +124,9 @@ if __name__ == "__main__":
     # Reference and current data split
     reference_jan11 = raw_data.loc['2011-01-01 00:00:00':'2011-01-28 23:00:00']
     current_feb11 = raw_data.loc['2011-01-29 00:00:00':'2011-02-28 23:00:00']
+
+    # print(f'reference_jan11 : {reference_jan11.shape}')
+    # print(f'current_feb11 : {current_feb11.shape}')
 
     # Train test split ONLY on reference_jan11
     print("=== Train, test, split on January data ===")
@@ -239,9 +242,11 @@ if __name__ == "__main__":
 
     # Run the regression performance report using the reference data
     print("=== Running model drift report on January data ===")
-    production_report_02.run(reference_data=None, 
-                                    current_data=reference_jan11,
-                                    column_mapping=column_mapping)
+    production_report_02.run(
+        reference_data=None, 
+        current_data=reference_jan11,
+        column_mapping=column_mapping
+    )
 
     # Convert the JSON string to a Python dictionary for pretty printing
     report_data_02 = json.loads(production_report_02.json())
@@ -256,8 +261,7 @@ if __name__ == "__main__":
     # # Generate the regression performance report
     # regression_report = generate_regression_report(reference_data, current_data)
 
-    # Create and Add report to workspace
-    workspace = Workspace.create(WORKSPACE_NAME)
+    # Add report to workspace
     add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, production_report_02)
 
 
@@ -268,9 +272,9 @@ if __name__ == "__main__":
 
     # Generate predictions for the current data
     print("=== Predicting on February 1st week data ===")
-    reference_feb11_01 = current_feb11.loc['2011-01-28 00:00:00':'2011-02-21 23:00:00']
-    ref_prediction_feb11_01 = regressor.predict(reference_feb11_01[numerical_features + categorical_features])
-    reference_feb11_01['prediction'] = ref_prediction_feb11_01
+    current_feb11_01 = current_feb11.loc['2011-01-29 00:00:00':'2011-02-07 23:00:00']
+    cur_prediction_feb11_01 = regressor.predict(current_feb11_01[numerical_features + categorical_features])
+    current_feb11_01['prediction'] = cur_prediction_feb11_01
 
     # Initialize the regression performance report with the default regression metrics preset
     production_report_03 = Report(
@@ -285,9 +289,11 @@ if __name__ == "__main__":
 
     # Run the regression performance report using the reference data
     print("=== Running model drift report on February 1st week data ===")
-    production_report_03.run(reference_data=reference_jan11, 
-                                    current_data=reference_feb11_01,
-                                    column_mapping=column_mapping)
+    production_report_03.run(
+        reference_data=reference_jan11, 
+        current_data=current_feb11_01,
+        column_mapping=column_mapping
+    )
 
     # Convert the JSON string to a Python dictionary for pretty printing
     report_data_03 = json.loads(production_report_03.json())
@@ -302,8 +308,7 @@ if __name__ == "__main__":
     # # Generate the regression performance report
     # regression_report = generate_regression_report(reference_data, current_data)
 
-    # Create and Add report to workspace
-    workspace = Workspace.create(WORKSPACE_NAME)
+    # Add report to workspace
     add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, production_report_03)
 
 
@@ -313,9 +318,9 @@ if __name__ == "__main__":
 
     # Generate predictions for the current data
     print("=== Predicting on February 2nd week data ===")
-    reference_feb11_02= current_feb11.loc['2011-02-08 00:00:00':'2011-02-14 23:00:00']
-    ref_prediction_feb11_02 = regressor.predict(reference_feb11_02[numerical_features + categorical_features])
-    reference_feb11_02['prediction'] = ref_prediction_feb11_02
+    current_feb11_02= current_feb11.loc['2011-02-08 00:00:00':'2011-02-14 23:00:00']
+    cur_prediction_feb11_02 = regressor.predict(current_feb11_02[numerical_features + categorical_features])
+    current_feb11_02['prediction'] = cur_prediction_feb11_02
 
     # Initialize the regression performance report with the default regression metrics preset
     production_report_04 = Report(
@@ -330,9 +335,11 @@ if __name__ == "__main__":
 
     # Run the regression performance report using the reference data
     print("=== Running model drift report on February 2nd week data ===")
-    production_report_04.run(reference_data=reference_jan11, 
-                                    current_data=reference_feb11_01,
-                                    column_mapping=column_mapping)
+    production_report_04.run(
+        reference_data=reference_jan11, 
+        current_data=current_feb11_02,
+        column_mapping=column_mapping
+    )
 
     # Convert the JSON string to a Python dictionary for pretty printing
     report_data_04 = json.loads(production_report_04.json())
@@ -347,8 +354,7 @@ if __name__ == "__main__":
     # # Generate the regression performance report
     # regression_report = generate_regression_report(reference_data, current_data)
 
-    # Create and Add report to workspace
-    workspace = Workspace.create(WORKSPACE_NAME)
+    # Add report to workspace
     add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, production_report_04)
 
 
@@ -358,9 +364,9 @@ if __name__ == "__main__":
 
     # Generate predictions for the current data
     print("=== Predicting on February 3rd week data ===")
-    reference_feb11_03= current_feb11.loc['2011-02-15 00:00:00':'2011-02-21 23:00:00']
-    ref_prediction_feb11_03 = regressor.predict(reference_feb11_03[numerical_features + categorical_features])
-    reference_feb11_03['prediction'] = ref_prediction_feb11_03
+    current_feb11_03 = current_feb11.loc['2011-02-15 00:00:00':'2011-02-21 23:00:00']
+    cur_prediction_feb11_03 = regressor.predict(current_feb11_03[numerical_features + categorical_features])
+    current_feb11_03['prediction'] = cur_prediction_feb11_03
 
     # Initialize the regression performance report with the default regression metrics preset
     production_report_05 = Report(
@@ -375,9 +381,11 @@ if __name__ == "__main__":
 
     # Run the regression performance report using the reference data
     print("=== Running model drift report on February 3rd week data ===")
-    production_report_05.run(reference_data=reference_jan11, 
-                                    current_data=reference_feb11_01,
-                                    column_mapping=column_mapping)
+    production_report_05.run(
+        reference_data=reference_jan11, 
+        current_data=current_feb11_03,
+        column_mapping=column_mapping
+    )
 
     # Convert the JSON string to a Python dictionary for pretty printing
     report_data_05 = json.loads(production_report_05.json())
@@ -392,10 +400,49 @@ if __name__ == "__main__":
     # # Generate the regression performance report
     # regression_report = generate_regression_report(reference_data, current_data)
 
-    # Create and Add report to workspace
-    workspace = Workspace.create(WORKSPACE_NAME)
+    # Add report to workspace
     add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, production_report_05)
 
+
+ 
+    ############################################################
+    ## ANALYSE DERIVE MODELE - Février Worst Week (3rd)
+    ############################################################
+
+    # Initialize the regression performance report with the default regression metrics preset
+    production_report_06 = Report(
+        metrics=[
+            TargetDriftPreset(),
+        ],
+        metadata = {
+            "name": "drift_exam_06_target_drift_feb_03",
+        },
+        tags=[tag],
+    )
+
+    # Run the regression performance report using the reference data
+    print("=== Running model drift report on February 3rd week data ===")
+    production_report_06.run(
+        reference_data=reference_jan11, 
+        current_data=current_feb11_03,
+        column_mapping=column_mapping
+    )
+
+    # Convert the JSON string to a Python dictionary for pretty printing
+    report_data_06 = json.loads(production_report_06.json())
+
+    # Save the report in JSON format with indentation for better readability
+    with open('drift_exam_06_target_drift_feb_03.json', 'w') as f:
+        json.dump(report_data_06, f, indent=4)
+
+    # save HTML
+    production_report_06.save_html("drift_exam_06_target_drift_feb_03.html")
+
+    # # Generate the regression performance report
+    # regression_report = generate_regression_report(reference_data, current_data)
+
+    # Add report to workspace
+    add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, production_report_06)
 
     
     ######################################################
@@ -424,7 +471,7 @@ if __name__ == "__main__":
     print("=== Running data drift report on February 3rd week data ===")
     data_drift_report_07.run(
         reference_data=reference_jan11,
-        current_data=reference_feb11_03,
+        current_data=current_feb11_03,
         column_mapping=column_mapping_drift,
     )
 
@@ -441,10 +488,8 @@ if __name__ == "__main__":
     # # Generate the regression performance report
     # regression_report = generate_regression_report(reference_data, current_data)
 
-    # Create and Add report to workspace
-    workspace = Workspace.create(WORKSPACE_NAME)
+    # Add report to workspace
     add_report_to_workspace(workspace, PROJECT_NAME, PROJECT_DESCRIPTION, data_drift_report_07)
-
 
 
     # Visualize the report in evidently UI at the URL http://localhost:8000
