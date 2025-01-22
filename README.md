@@ -2,6 +2,11 @@
 Datascientest Cursus MLOPS - Sprint 4 - Drift Monitoring - Exam
 
 
+## Exécution du script python pour générer les rapports
+Depuis le folder contenant le fichier "drift_exam.py":
+python3 drift_exam.py
+
+
 ## Questions
 ### Question après étape 4
 *Après l'étape 4 (model drift sur chacune des 3 premières semaines de février), expliquez ce qui a changé au cours des semaines 1, 2 et 3.*
